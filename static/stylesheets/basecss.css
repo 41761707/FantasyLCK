@@ -1,0 +1,23 @@
+body
+{
+	box-sizing: border-box;
+}
+main,body
+{
+	color: #030202;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+.navbar-logo
+{
+	width:  125px;
+    height: 125px;
+    object-fit:scale-down;
+    cursor: pointer;
+}
+.navbar-logo:hover
+{
+	transition: all .2s ease;
+	transform:scale(1.3);
+}
