@@ -1,0 +1,92 @@
+{% extends 'navbar.html' %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='stylesheets/playerscss.css') }}"/>
+{% endblock %}
+{% block title %}
+Gracze
+{% endblock %}
+{% block nav %}
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('home_page')}}"> Strona Główna</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('news_page') }}">Aktualności</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('table_page')}}">Tabela</a>
+</li>
+<li class="nav-item active">
+  <a class="nav-link active" href="{{ url_for('players_page')}}">Gracze<span class="sr-only">(current)</span></a>
+</li>
+<li class="nav-item">
+ <a class="nav-link" href="{{ url_for('schedule_page') }}">Terminarz</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('matches_page') }}">Mecze</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('how_page') }}">Jak grać?</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('about_page') }}">O projekcie</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#">Login</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#">Rejestracja</a>
+</li>
+{% endblock %}
+{% block content %}
+<main class="container">
+  <header class="text-center">
+    <h1 class="display-1 m-5">Gracze-tabela</h1>
+  </header>
+  <article class="row table-responsive">
+    <table class="table table-hover table-striped table-border table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col te">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_summary[player.id-1].kills}}</td>
+                    <td>{{stats_summary[player.id-1].deaths}}</td>
+                    <td>{{stats_summary[player.id-1].assists}}</td>
+                    <td>{{stats_summary[player.id-1].creep_score}}</td>
+                    <td>{{stats_summary[player.id-1].triples}}</td>
+                    <td>{{stats_summary[player.id-1].quadras}}</td>
+                    <td>{{stats_summary[player.id-1].pentas}}</td>
+                    <td>{{stats_summary[player.id-1].points}}</td>
+                    <td><button class="btn btn-info">Więcej</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+  </article>
+  <footer>
+  </footer>
+</main>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'navbar.html' %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='stylesheets/basecss.css') }}"/>
+{% endblock %}
+{% block title %}
+Strona Główna
+{% endblock %}
+{% block nav %}
+<li class="nav-item active">
+  <a class="nav-link active" href="{{ url_for('home_page')}}"> Strona Główna <span class="sr-only">(current)</span></a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('news_page') }}">Aktualności</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('table_page')}}">Tabela</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('players_page') }}">Gracze</a>
+</li>
+<li class="nav-item">
+ <a class="nav-link" href="{{ url_for('schedule_page') }}">Terminarz</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('matches_page') }}">Mecze</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('how_page') }}">Jak grać?</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('about_page') }}">O projekcie</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#">Login</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#">Rejestracja</a>
+</li>
+{% endblock %}
+{% block content %}
+<main class="container-fluid">
+  <header class="text-center">
+    <h1 class="display-1 m-5"> Strona Główna</h1>
+  </header>
+  <article class="row">
+
+  </article>
+  <footer>
+  </footer>
+</main>
+{% endblock %}

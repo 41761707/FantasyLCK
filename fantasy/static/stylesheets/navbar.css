@@ -1,14 +1,4 @@
-body
-{
-	box-sizing: border-box;
-}
-main,body
-{
-	color: #030202;
-	width: 100%;
-	margin: 0;
-	padding: 0;
-}
+
 .navbar-logo
 {
 	width:  125px;

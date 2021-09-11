@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='stylesheets/basecss.css') }}"/>
+    <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='stylesheets/navbar.css') }}"/>
+    {% block stylesheet %}
+    {% endblock %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.13.0/devicon.min.css">
@@ -12,93 +14,59 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <title>Strona Główna</title>
+    <title>
+      {% block title %}
+      {% endblock %}
+    </title>
   </head>
   <body data-aos-easing="ease-in-out" data-aos-duration="1000" data-aos-delay="0">
-    <main class="container-fluid">
-      <article class="m-3 row">
-      <section class="col m-1 p-1">
-        <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/Afreeca Freecs.jpg') }}", alt="Afreeca Freecs logo"/>
+      <article class="m-5 row">
+      <section class="col-sm mb-4 p-1">
+        <a href="#"><img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/Afreeca Freecs.jpg') }}", alt="Afreeca Freecs logo"/></a>
       </section>
-      <section class="col m-1 p-1">
+      <section class="col-sm mb-4 p-1">
         <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/DRX.jpg') }}", alt="DRX logo"/>
       </section>
-      <section class="col m-1 p-1">
+      <section class="col-sm mb-4 p-1">
         <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/DWG KIA.jpg') }}", alt="DWG KIA logo"/>
       </section>
-      <section class="col m-1 p-1">
+      <section class="col-sm mb-4 p-1">
         <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/Fredit Brion.jpg') }}", alt="Fredit Brion logo"/>
       </section>
-      <section class="col m-1 p-1">
+      <section class="col-sm mb-4 p-1">
         <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/Gen G.jpg') }}", alt="Gen G logo"/>
       </section>
-    </article>
-    <article class="m-3 row">
-      <section class="col m-1 p-1">
-        <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/KT Rolster.jpg') }}", alt="KT Rolster logo"/>
+      <section class="m-3 w-100"></section>
+      <section class="col-sm mb-4 p-1">
+        <a href="teams/ktRolster"> <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/KT Rolster.jpg') }}", alt="KT Rolster logo"/> </a>
       </section>
-      <section class="col m-1 p-1">
+      <section class="col-sm mb-4 p-1">
         <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/Liiv SANDBOX.jpg') }}", alt="liiv SANDBOX logo"/>
       </section>
-      <section class="col m-1 p-1">
+      <section class="col-sm mb-4 p-1">
         <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/Hanwha Life Esports.jpg') }}", alt="Hanwha Life Esports logo"/>
       </section>
-      <section class="col m-1 p-1">
+      <section class="col-sm mb-4 p-1">
         <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/Nongshim RedForce.jpg') }}", alt="Nongshim RedForce logo"/>
       </section>
-      <section class="col m-1 p-1">
+      <section class="col-sm mb-4 p-1">
         <img class="rounded mx-auto d-block navbar-logo" src= "{{ url_for('static',filename='logos/T1.jpg') }}", alt="T1 logo"/>
       </section>
     </article>
-      <nav class="navbar navbar-expand-md text-center navbar-dark bg-dark">
+      <nav class=" m-3 navbar navbar-expand-md text-center navbar-dark bg-dark">
       <a class="navbar-brand" href="#">FantasyLCK</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
-        <ul class="navbar-nav  nav-fill w-100">
-          <li class="nav-item active">
-            <a class="nav-link active" href="#"> Strona Główna <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Aktualności</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Tabela</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Gracze</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Terminarz</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Mecze</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Jak grać?</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">O projekcie</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Rejestracja</a>
-          </li>
+        <ul class="navbar-nav nav-pills nav-fill w-100">
+          {% block nav %}
+          {% endblock%}
         </ul>
       </div>
     </nav>
-      <header class="text-center">
-        <h1 class="display-1 m-5"> Strona Główna</h1>
-      </header>
-      <article class="row">
-
-      </article>
-    </main>
-    <footer>
-    </footer>
+      {% block content %}
+      {% endblock %}
   </body>
 </html>
 <script>
