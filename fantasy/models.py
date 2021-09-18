@@ -5,7 +5,9 @@ class Player(db.Model):
 	team_id=db.Column(db.Integer(),db.ForeignKey('team.id'),nullable=False)
 	name=db.Column(db.String(length=25),nullable=False,unique=True)
 	role=db.Column(db.String(length=3),nullable=False)
+	#photo=db.Column(db.String(length=100),nullable=False)
 	locked=db.Column(db.String(length=50))
+	stats = db.relationship('PlayersStats', backref='playersstats', lazy=True)
 	stats_weekly = db.relationship('PlayersStatsWeekly', backref='playersstatsweekly', lazy=True)
 	stats_summary = db.relationship('PlayersStatsSummary', backref='playersstatssummary', lazy=True)
 
@@ -17,32 +19,52 @@ class Team(db.Model):
 	id=db.Column(db.Integer(),primary_key=True)
 	name=db.Column(db.String(length=50),nullable=False,unique=True)
 	shortcut=db.Column(db.String(length=3),nullable=False,unique=True)
-	wins=db.Column(db.Integer(),nullable=False)
-	loses=db.Column(db.Integer(),nullable=False)
-	map_ratio=db.Column(db.String(length=10),nullable=False)
-	matches=db.Column(db.Integer(),nullable=False)
+	photo=db.Column(db.String(length=100),nullable=False)
+	wins=db.Column(db.Integer(),nullable=False,default=0)
+	loses=db.Column(db.Integer(),nullable=False,default=0)
+	maps_won=db.Column(db.Integer(),nullable=False,default=0)
+	maps_lost=db.Column(db.Integer(),nullable=False,default=0)
+	matches=db.Column(db.Integer(),nullable=False,default=0)
 	player=db.relationship('Player',backref='player',lazy=True)
+	stats= db.relationship('TeamsStats', backref='teamstats', lazy=True)
 	stats_weekly = db.relationship('TeamsStatsWeekly', backref='teamstatsweekly', lazy=True)
-	stats_summary = db.relationship('TeamsStatsSummary', backref='teamssstatssummary', lazy=True)
+	stats_summary = db.relationship('TeamsStatsSummary', backref='teamstatssummary', lazy=True)
 	team1_match=db.relationship('Match',foreign_keys='Match.team1_id',backref='match_team1',lazy=True)
 	team2_match=db.relationship('Match',foreign_keys='Match.team2_id',backref='match_team2',lazy=True)
+	game1_match=db.relationship('Game',foreign_keys='Game.team1_id',backref='game_team1',lazy=True)
+	game2_match=db.relationship('Game',foreign_keys='Game.team2_id',backref='game_team2',lazy=True)
 
 
 
 	def __repr__(self):
 		return f'{self.name}'
 
-class Match(db.Model):
+class Game(db.Model):
 	id=db.Column(db.Integer(),primary_key=True)
-	game_number=db.Column(db.Integer())
 	team1_id=db.Column(db.Integer(),db.ForeignKey('team.id'),nullable=False)
 	team1_score=db.Column(db.Integer(),nullable=False)
 	team2_id=db.Column(db.Integer(),db.ForeignKey('team.id'),nullable=False)
 	team2_score=db.Column(db.Integer(),nullable=False)
 	week=db.Column(db.Integer(),nullable=False)
-	length=db.Column(db.String(length=10),nullable=False)
-	players_stats_weekly=db.relationship('PlayersStatsWeekly',backref='playersstats',lazy=True)
-	teams_stats_weekly=db.relationship('TeamsStatsWeekly',backref='teamstats',lazy=True)
+	match=db.relationship('Match',backref="game",lazy=True)
+
+	def __repr__(self):
+		return f'{self.id}'
+
+class Match(db.Model):
+	id=db.Column(db.Integer(),primary_key=True)
+	game_number=db.Column(db.Integer())
+	game_id=db.Column(db.Integer(),db.ForeignKey('game.id'),nullable=False)
+	played=db.Column(db.Boolean(),nullable=False,default=False)
+	team1_id=db.Column(db.Integer(),db.ForeignKey('team.id'),nullable=False)
+	team1_score=db.Column(db.Integer(),nullable=False)
+	team2_id=db.Column(db.Integer(),db.ForeignKey('team.id'),nullable=False)
+	team2_score=db.Column(db.Integer(),nullable=False)
+	week=db.Column(db.Integer(),nullable=False)
+	minutes=db.Column(db.Integer(),nullable=False,default=0)
+	seconds=db.Column(db.Integer(),nullable=False,default=0)
+	players_stats_weekly=db.relationship('PlayersStats',backref='playersstatsmatch',lazy=True)
+	teams_stats_weekly=db.relationship('TeamsStats',backref='teamstatsmatch',lazy=True)
 
 	def __repr__(self):
 		return f'{self.id}'
@@ -50,71 +72,103 @@ class Match(db.Model):
 
 
 
+class PlayersStats(db.Model):
+	__tablename__ = 'PlayersStats'
+	id=db.Column(db.Integer(),primary_key=True)
+	player_id=db.Column(db.Integer(),db.ForeignKey('player.id'),nullable=False)
+	match_id=db.Column(db.Integer(),db.ForeignKey('match.id'),nullable=False)
+	kills=db.Column(db.Integer(),nullable=False,default=0)
+	deaths=db.Column(db.Integer(),nullable=False,default=0)
+	assists=db.Column(db.Integer(),nullable=False,default=0)
+	creep_score=db.Column(db.Integer(),nullable=False)
+	triples=db.Column(db.Integer(),nullable=False,default=0)
+	quadras=db.Column(db.Integer(),nullable=False,default=0)
+	pentas=db.Column(db.Integer(),nullable=False,default=0)
+	points=db.Column(db.Float(),nullable=False,default=0)
+
+	def __repr__(self):
+		return f'{self.player_id} match {self.match_id}'
+
 class PlayersStatsWeekly(db.Model):
 	__tablename__ = 'PlayersStatsWeekly'
 	id=db.Column(db.Integer(),primary_key=True)
 	player_id=db.Column(db.Integer(),db.ForeignKey('player.id'),nullable=False)
-	match_id=db.Column(db.Integer(),db.ForeignKey('match.id'),nullable=False)
-	kills=db.Column(db.Integer(),nullable=False)
-	deaths=db.Column(db.Integer(),nullable=False)
-	assists=db.Column(db.Integer(),nullable=False)
-	creep_score=db.Column(db.Integer(),nullable=False)
-	triples=db.Column(db.Integer(),nullable=False)
-	quadras=db.Column(db.Integer(),nullable=False)
-	pentas=db.Column(db.Integer(),nullable=False)
-	length=db.Column(db.Time(),nullable=False)
+	games_played=db.Column(db.Integer(),nullable=False,default=0)
+	kills=db.Column(db.Integer(),nullable=False,default=0)
+	deaths=db.Column(db.Integer(),nullable=False,default=0)
+	assists=db.Column(db.Integer(),nullable=False,default=0)
+	creep_score=db.Column(db.Float(),nullable=False)
+	triples=db.Column(db.Integer(),nullable=False,default=0)
+	quadras=db.Column(db.Integer(),nullable=False,default=0)
+	pentas=db.Column(db.Integer(),nullable=False,default=0)
+	points=db.Column(db.Float(),nullable=False,default=0)
 	week=db.Column(db.Integer(),nullable=False)
-	game=db.Column(db.Integer(),nullable=False)
-	points=db.Column(db.Float(),nullable=False)
 
 	def __repr__(self):
-		return f'{self.player_id} week {self.week} game {self.game}'
+		return f'{self.player_id} week {self.week}'
 
 class PlayersStatsSummary(db.Model):
 	__tablename__ = 'PlayersStatsSummary'
 	player_id=db.Column(db.Integer(),db.ForeignKey('player.id'),nullable=False,primary_key=True)
-	kills=db.Column(db.Integer(),nullable=False)
-	deaths=db.Column(db.Integer(),nullable=False)
-	assists=db.Column(db.Integer(),nullable=False)
-	creep_score=db.Column(db.Integer(),nullable=False)
-	triples=db.Column(db.Integer(),nullable=False)
-	quadras=db.Column(db.Integer(),nullable=False)
-	pentas=db.Column(db.Integer(),nullable=False)
-	points=db.Column(db.Float(),nullable=False)
+	games_played=db.Column(db.Integer(),nullable=False,default=0)
+	kills=db.Column(db.Integer(),nullable=False,default=0)
+	deaths=db.Column(db.Integer(),nullable=False,default=0)
+	assists=db.Column(db.Integer(),nullable=False,default=0)
+	creep_score=db.Column(db.Float(),nullable=False)
+	triples=db.Column(db.Integer(),nullable=False,default=0)
+	quadras=db.Column(db.Integer(),nullable=False,default=0)
+	pentas=db.Column(db.Integer(),nullable=False,default=0)
+	points=db.Column(db.Float(),nullable=False,default=0)
 
 	def __repr__(self):
 		return f'{self.player_id}'
 
 
 
-class TeamsStatsWeekly(db.Model):
-	__tablename__ = 'TeamsStatsWeekly'
+
+class TeamsStats(db.Model):
+	__tablename__ = 'TeamsStats'
 	id=db.Column(db.Integer(),primary_key=True)
 	team_id=db.Column(db.Integer(),db.ForeignKey('team.id'),nullable=False)
 	match_id=db.Column(db.Integer(),db.ForeignKey('match.id'),nullable=False)
-	barons=db.Column(db.Integer(),nullable=False)
-	dragons=db.Column(db.Integer(),nullable=False)
-	first_bloods=db.Column(db.Integer(),nullable=False)
-	towers=db.Column(db.Integer(),nullable=False)
-	length=db.Column(db.Time(),nullable=False)
-	week=db.Column(db.Integer(),nullable=False)
-	game=db.Column(db.Integer(),nullable=False)
-	points=db.Column(db.Float(),nullable=False)
+	barons=db.Column(db.Integer(),nullable=False,default=0)
+	dragons=db.Column(db.Integer(),nullable=False,default=0)
+	first_bloods=db.Column(db.Integer(),nullable=False,default=0)
+	towers=db.Column(db.Integer(),nullable=False,default=0)
+	points=db.Column(db.Float(),nullable=False,default=0)
 
 	def __repr__(self):
-		return f'{self.team_id} week {self.week} game {self.game}'
+		return f'{self.team_id} match {self.match_id}'
+
+class TeamsStatsWeekly(db.Model):
+	__tablename__ = 'TeamsStatsWeekly'
+	id=db.Column(db.Integer(),primary_key=True)
+	team_id=db.Column(db.Integer(),db.ForeignKey('team.id'),nullable=False,primary_key=True)
+	games_played=db.Column(db.Integer(),nullable=False,default=0)
+	barons=db.Column(db.Integer(),nullable=False,default=0)
+	dragons=db.Column(db.Integer(),nullable=False,default=0)
+	first_bloods=db.Column(db.Integer(),nullable=False,default=0)
+	towers=db.Column(db.Integer(),nullable=False,default=0)
+	points=db.Column(db.Float(),nullable=False,default=0)
+	week=db.Column(db.Integer(),nullable=False)
+
+	def __repr__(self):
+		return f'{self.team_id} week {self.week}'
 
 class TeamsStatsSummary(db.Model):
 	__tablename__ = 'TeamsStatsSummary'
 	team_id=db.Column(db.Integer(),db.ForeignKey('team.id'),nullable=False,primary_key=True)
-	barons=db.Column(db.Integer(),nullable=False)
-	dragons=db.Column(db.Integer(),nullable=False)
-	first_bloods=db.Column(db.Integer(),nullable=False)
-	towers=db.Column(db.Integer(),nullable=False)
-	points=db.Column(db.Float(),nullable=False)
+	games_played=db.Column(db.Integer(),nullable=False,default=0)
+	barons=db.Column(db.Integer(),nullable=False,default=0)
+	dragons=db.Column(db.Integer(),nullable=False,default=0)
+	first_bloods=db.Column(db.Integer(),nullable=False,default=0)
+	towers=db.Column(db.Integer(),nullable=False,default=0)
+	points=db.Column(db.Float(),nullable=False,default=0)
 
 	def __repr__(self):
 		return f'{self.team_id}'
+
+
 class User(db.Model):
 	__tablename__='User'
 	id=db.Column(db.Integer(),primary_key=True)

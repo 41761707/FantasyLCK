@@ -42,8 +42,25 @@ Tabela
   <header class="text-center">
     <h1 class="display-1 m-5"> Tabela </h1>
   </header>
-  <article class="row">
+  <article  data-aos="fade-right" class="row m-3 table-responsive">
+    <table class=" table table-hover table-striped table-border table-info">
+      <caption>Tabela Rozgrywek</caption>
+      <thead>
+      </thead>
+        <tbody>
+          {% for team in teams %}
 
+          <tr>
+            <th class="txt text-center" scope="row">{{ loop.index }} </th>
+            <td><img class="photo" src="{{ url_for('static',filename=team.photo) }}"/></td>
+            <td class="txt" >{{team.name}}</td>
+            <td class="txt text-center" >{{team.matches}} G</td>
+            <td class="txt text-center" >{{team.wins}} W-{{team.loses}} L</td>
+            <td class="txt text-center" >{{team.maps_won}}:{{team.maps_lost}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
   </article>
   <footer>
   </footer>

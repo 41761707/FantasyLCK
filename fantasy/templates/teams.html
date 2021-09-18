@@ -1,6 +1,6 @@
 {% extends 'navbar.html' %}
 {% block stylesheet %}
-<link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='stylesheets/newscss.css') }}"/>
+<link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='stylesheets/teamscss.css') }}"/>
 {% endblock %}
 {% block title %}
 Aktualności
@@ -9,8 +9,8 @@ Aktualności
 <li class="nav-item">
   <a class="nav-link" href="{{ url_for('home_page') }}">Strona Główna</a>
 </li>
-<li class="nav-item active">
-  <a class="nav-link active" href="{{ url_for('news_page') }}">Aktualności<span class="sr-only">(current)</span></a>
+<li class="nav-item">
+  <a class="nav-link " href="{{ url_for('news_page') }}">Aktualności</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="{{ url_for('table_page')}}">Tabela</a>
@@ -40,7 +40,7 @@ Aktualności
 {% block content %}
 <main class="container-fluid">
   <header class="text-center">
-    <h1 class="display-1 m-5">Aktualności</h1>
+    <h1 class="display-1 m-5">Drużyny</h1>
   </header>
   <article class="row">
 

@@ -43,10 +43,203 @@ Terminarz
   <header class="text-center">
     <h1 class="display-1 m-5">Terminarz</h1>
   </header>
-  <article class="row">
-
+  <article class="box">
+    <button class="accordion">Tydzień 1</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==1 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col-2 photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="txt col-2">{{game.shortcut1}}</h3>
+        <h3 class="txt col-1">{{game.team1_score}}</h3>
+        <h3 class="txt col-2"> - </h3>
+        <h3 class="txt col-1">{{game.team2_score}}</h3>
+        <h3 class="txt col-2">{{game.shortcut2}}</h3>
+        <img class="col-2 photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
+  </article>
+  <article class="box">
+    <button class="accordion">Tydzień 2</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==2 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="col">{{game.shortcut1}}</h3>
+        <h3 class="col">{{game.team1_score}}</h3>
+        <h3 class="col"> - </h3>
+        <h3 class="col">{{game.team2_score}}</h3>
+        <h3 class="col">{{game.shortcut2}}</h3>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
+  </article>
+  <article class="box">
+    <button class="accordion">Tydzień 3</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==3 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="col">{{game.shortcut1}}</h3>
+        <h3 class="col">{{game.team1_score}}</h3>
+        <h3 class="col"> - </h3>
+        <h3 class="col">{{game.team2_score}}</h3>
+        <h3 class="col">{{game.shortcut2}}</h3>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
+  </article>
+  <article class="box">
+    <button class="accordion">Tydzień 4</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==4 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="col">{{game.shortcut1}}</h3>
+        <h3 class="col">{{game.team1_score}}</h3>
+        <h3 class="col"> - </h3>
+        <h3 class="col">{{game.team2_score}}</h3>
+        <h3 class="col">{{game.shortcut2}}</h3>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
+  </article>
+  <article class="box">
+    <button class="accordion">Tydzień 5</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==5 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="col">{{game.shortcut1}}</h3>
+        <h3 class="col">{{game.team1_score}}</h3>
+        <h3 class="col"> - </h3>
+        <h3 class="col">{{game.team2_score}}</h3>
+        <h3 class="col">{{game.shortcut2}}</h3>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
+  </article>
+  <article class="box">
+    <button class="accordion">Tydzień 6</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==6 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="col">{{game.shortcut1}}</h3>
+        <h3 class="col">{{game.team1_score}}</h3>
+        <h3 class="col"> - </h3>
+        <h3 class="col">{{game.team2_score}}</h3>
+        <h3 class="col">{{game.shortcut2}}</h3>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
+  </article>
+  <article class="box">
+    <button class="accordion">Tydzień 7</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==7 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="col">{{game.shortcut1}}</h3>
+        <h3 class="col">{{game.team1_score}}</h3>
+        <h3 class="col"> - </h3>
+        <h3 class="col">{{game.team2_score}}</h3>
+        <h3 class="col">{{game.shortcut2}}</h3>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
+  </article>
+  <article class="box">
+    <button class="accordion">Tydzień 8</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==8 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="col">{{game.shortcut1}}</h3>
+        <h3 class="col">{{game.team1_score}}</h3>
+        <h3 class="col"> - </h3>
+        <h3 class="col">{{game.team2_score}}</h3>
+        <h3 class="col">{{game.shortcut2}}</h3>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
+  </article>
+  <article class="box">
+    <button class="accordion">Tydzień 9</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==9 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="col">{{game.shortcut1}}</h3>
+        <h3 class="col">{{game.team1_score}}</h3>
+        <h3 class="col"> - </h3>
+        <h3 class="col">{{game.team2_score}}</h3>
+        <h3 class="col">{{game.shortcut2}}</h3>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
+  </article>
+  <article class="box">
+    <button class="accordion">Tydzień 10</button>
+    <section class="panel">
+    {% for game in games %}
+      {% if game.week==10 %}
+      <div class="border row text-center bg-light p-3">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h3 class="col">{{game.shortcut1}}</h3>
+        <h3 class="col">{{game.team1_score}}</h3>
+        <h3 class="col"> - </h3>
+        <h3 class="col">{{game.team2_score}}</h3>
+        <h3 class="col">{{game.shortcut2}}</h3>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </section>
   </article>
   <footer>
   </footer>
 </main>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("current");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
 {% endblock %}

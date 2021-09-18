@@ -1,0 +1,84 @@
+body
+{
+	box-sizing: border-box;
+}
+main,body
+{
+	color: #030202;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+.photo
+{
+    width:  50px;
+    height: 50px;
+    object-fit:scale-down;
+    cursor: pointer;
+    mix-blend-mode: multiply;
+}
+.box
+{
+	width: 80%;
+	margin: 0 auto;
+}
+
+.accordion 
+{
+  font-size: 2.5rem;
+  background-color: #292b2c;
+  color: #f7f7f7;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: center;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  border: 1px solid white;
+}
+
+
+.current, .accordion:hover 
+{
+  background-color: #aaa;
+}
+.panel 
+{
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+}
+.accordion:after 
+{
+  content: '\02795';
+  font-size: 13px;
+  color: #f7f7f7;
+  float: right;
+  margin-left: 5px;
+}
+
+.current:after 
+{
+  content: "\2796";
+  color: #f7f7f7;
+}
+.border
+{
+  border-bottom: 1px solid black;
+}
+@media (max-width: 900px)
+{
+  .txt
+  {
+    font-size: 1.5rem;
+  }
+  .photo
+  {
+    width:  40px;
+      height: 40px;
+      object-fit:scale-down;
+      cursor: pointer;
+      mix-blend-mode: multiply;
+  }
+}

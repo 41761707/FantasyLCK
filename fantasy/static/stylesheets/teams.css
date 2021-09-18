@@ -1,0 +1,38 @@
+body
+{
+	box-sizing: border-box;
+}
+main,body
+{
+	color: #030202;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.borders
+{
+	border-radius: 25px;
+}
+
+.col-sm-4
+{
+	width: 29% !important;
+	margin: 2% 2%;
+}
+.card
+{
+	padding: 0 !important;
+}
+.Siema
+{
+	background-image: url("static/logos/Afreeca_Freecs_full.png");
+}
+@media(max-width:768px)
+{
+	.col-sm-4
+	{
+		width: 95% !important;
+		margin: 2.5%;
+	}
+}

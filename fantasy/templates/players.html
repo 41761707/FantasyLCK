@@ -1,9 +1,15 @@
 {% extends 'navbar.html' %}
 {% block stylesheet %}
 <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='stylesheets/playerscss.css') }}"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js">
+</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
+</script>
 {% endblock %}
 {% block title %}
-Gracze
+  Gracze
 {% endblock %}
 {% block nav %}
 <li class="nav-item">
@@ -41,15 +47,31 @@ Gracze
 <main class="container">
   <header class="text-center">
     <h1 class="display-1 m-5">Gracze-tabela</h1>
+    <h3> <strong>UWAGA:</strong> Dane przedstawione w kolumnach są sumą wyników otrzymanych w danym przedziale czasowym. Jedynym wyjątkiem od tej reguły jest kolumna "Punkty", która zawsze przedstawia średnią liczbę uzyskanych punktów.</h3>
   </header>
-  <article class="row table-responsive">
-    <table class="table table-hover table-striped table-border table-dark">
+  <article class="row m-5">
+    <button id="button1" class="col m-1 btn btn-dark" onclick="showTable('week1','button1')">W1</button>
+    <button id="button2" class="col m-1 btn btn-dark" onclick="showTable('week2','button2')">W2</button>
+    <button id="button3" class="col m-1 btn btn-dark" onclick="showTable('week3','button3')">W3</button>
+    <button id="button4" class="col m-1 btn btn-dark" onclick="showTable('week4','button4')">W4</button>
+    <button id="button5" class="col m-1 btn btn-dark" onclick="showTable('week5','button5')">W5</button>
+    <button id="button6" class="col m-1 btn btn-dark" onclick="showTable('week6','button6')">W6</button>
+    <button id="button7" class="col m-1 btn btn-dark" onclick="showTable('week7','button7')">W7</button>
+    <button id="button8" class="col m-1 btn btn-dark" onclick="showTable('week8','button8')">W8</button>
+    <button id="button9" class="col m-1 btn btn-dark" onclick="showTable('week9','button9')">W9</button>
+    <button id="button10" class="col m-1 btn btn-dark" onclick="showTable('week10','button10')">W10</button>
+    <button id="sum" class="col m-1 btn btn-dark" onclick="showTable('summary','sum')">SUMA</button>
+  </article>
+  <article class="row m-3 table-responsive">
+    <table id="summary" class="invisible table table-hover table-striped table-border table-dark">
+      <caption>Wyniki sumaryczne </caption>
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col te">Nazwa</th>
+                <th scope="col">Nazwa</th>
                 <th scope="col">Drużyna</th>
                 <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
                 <th scope="col">Zabójstwa</th>
                 <th scope="col">Zgony</th>
                 <th scope="col">Asysty</th>
@@ -66,12 +88,12 @@ Gracze
         </thead>
         <tbody>
           {% for player in players %}
-
                 <tr>
                     <th scope="row">{{player.id}}</th>
                     <td>{{player.name}}</td>
                     <td>{{teams[player.team_id-1].shortcut}}</td>
                     <td>{{player.role}}</td>
+                    <td>{{stats_summary[player.id-1].games_played}}</td>
                     <td>{{stats_summary[player.id-1].kills}}</td>
                     <td>{{stats_summary[player.id-1].deaths}}</td>
                     <td>{{stats_summary[player.id-1].assists}}</td>
@@ -79,8 +101,426 @@ Gracze
                     <td>{{stats_summary[player.id-1].triples}}</td>
                     <td>{{stats_summary[player.id-1].quadras}}</td>
                     <td>{{stats_summary[player.id-1].pentas}}</td>
-                    <td>{{stats_summary[player.id-1].points}}</td>
-                    <td><button class="btn btn-info">Więcej</button></td>
+                    {% if stats_summary[player.id-1].games_played != 0 %}
+                      <td>{{"%.2f"|format(stats_summary[player.id-1].points/stats_summary[player.id-1].games_played)}}</td>
+                    {% else %}
+                      <td>{{"%.2f"|format(stats_summary[player.id-1].points)}}</td>
+                    {% endif %}
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week1" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 1</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10].pentas}}</td>
+                    {% if stats_weekly[(player.id-1)*10].games_played != 0 %}
+                      <td>{{"%.2f"|format(stats_weekly[(player.id-1)*10].points/stats_weekly[(player.id-1)*10].games_played)}}</td>
+                    {% else %}
+                      <td>{{"%.2f"|format(stats_weekly[(player.id-1)*10].points)}}</td>
+                    {% endif %}
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week2" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 2</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+1].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+1].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+1].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+1].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+1].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+1].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+1].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+1].pentas}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+1].points}}</td>
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week3" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 3</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+2].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+2].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+2].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+2].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+2].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+2].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+2].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+2].pentas}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+2].points}}</td>
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week4" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 4</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+3].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+3].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+3].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+3].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+3].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+3].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+3].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+3].pentas}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+3].points}}</td>
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week5" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 5</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+4].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+4].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+4].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+4].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+4].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+4].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+4].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+4].pentas}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+4].points}}</td>
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week6" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 6</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+5].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+5].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+5].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+5].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+5].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+5].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+5].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+5].pentas}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+5].points}}</td>
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week7" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 7</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+6].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+6].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+6].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+6].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+6].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+6].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+6].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+6].pentas}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+6].points}}</td>
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week8" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 8</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+7].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+7].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+7].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+7].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+7].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+7].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+7].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+7].pentas}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+7].points}}</td>
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week9" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 9</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+8].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+8].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+8].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+8].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+8].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+8].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+8].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+8].pentas}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+8].points}}</td>
+                    <td><button class="btn btn-info">Profil</button></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    <table id="week10" class="invisible table table-hover table-striped table-border table-dark">
+      <caption> Tydzień 10</caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Drużyna</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Gry</th>
+                <th scope="col">Zabójstwa</th>
+                <th scope="col">Zgony</th>
+                <th scope="col">Asysty</th>
+                <th scope="col">CS/M</th>
+                <th scope="col">3x</th>
+                <th scope="col">4x</th>
+                <th scope="col">5x</th>
+                <th scope="col">Punkty</th>
+                <th scope="col">Więcej</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for player in players %}
+                <tr>
+                    <th scope="row">{{player.id}}</th>
+                    <td>{{player.name}}</td>
+                    <td>{{teams[player.team_id-1].shortcut}}</td>
+                    <td>{{player.role}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+9].games_played}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+9].kills}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+9].deaths}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+9].assists}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+9].creep_score}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+9].triples}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+9].quadras}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+9].pentas}}</td>
+                    <td>{{stats_weekly[(player.id-1)*10+9].points}}</td>
+                    <td><button class="btn btn-info">Profil</button></td>
                 </tr>
                 {% endfor %}
         </tbody>
@@ -89,4 +529,133 @@ Gracze
   <footer>
   </footer>
 </main>
+<script>
+  function showTable(arg,button) {
+    console.log(arg);
+    if(document.getElementById(arg).classList.contains('invisible'))
+    {
+        document.getElementById(button).classList.remove('btn-dark');
+        document.getElementById(button).classList.add('btn-success');
+        document.getElementById(arg).classList.remove('invisible');
+        document.getElementById(arg).classList.add('visible');
+    }
+    else
+    {
+        document.getElementById(button).classList.remove('btn-success');
+        document.getElementById(button).classList.add('btn-dark');
+        document.getElementById(arg).classList.add('invisible');
+        document.getElementById(arg).classList.remove('visible');
+    }
+}
+</script>
+<script>
+$(document).ready(function() {
+$('#week1').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#week2').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#week3').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#week4').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#week5').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#week6').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#week7').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#week8').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#week9').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#week10').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
+<script>
+$(document).ready(function() {
+$('#summary').dataTable({
+    "bPaginate": false,
+    "bLengthChange": false,
+    "bFilter": false,
+    "bInfo": false,
+    "bAutoWidth": false });
+});
+</script>
 {% endblock %}

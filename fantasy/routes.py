@@ -1,6 +1,7 @@
-from fantasy import app
-from flask import render_template
-from fantasy.models import Player,PlayersStatsWeekly,PlayersStatsSummary,Match,Team
+from fantasy import app,conn,db
+from flask import render_template,abort
+from sqlalchemy.orm import aliased
+from fantasy.models import Player,PlayersStatsWeekly,PlayersStatsSummary,Match,Team,Game
 
 @app.route('/index/')
 @app.route('/')
@@ -14,7 +15,8 @@ def news_page():
 
 @app.route('/table')
 def table_page():
-	return render_template('table.html')
+	teams=Team.query.order_by(Team.wins.desc(),Team.maps_won.desc());
+	return render_template('table.html',teams=teams)
 
 @app.route('/players')
 def players_page():
@@ -30,7 +32,11 @@ def players_page():
 
 @app.route('/schedule')
 def schedule_page():
-	return render_template('schedule.html')
+	T1=aliased(Team)
+	T2=aliased(Team)
+
+	games=db.session.query(Game.id,Game.team1_id,Game.team1_score,Game.team2_id,Game.team2_score,Game.week,T1.shortcut.label("shortcut1"),T1.photo.label("photo1"),T2.shortcut.label("shortcut2"),T2.photo.label("photo2")).join(T1,T1.id==Game.team1_id).join(T2,T2.id==Game.team2_id)
+	return render_template('schedule.html',games=games)
 
 @app.route('/matches')
 def matches_page():
@@ -43,3 +49,21 @@ def how_page():
 @app.route('/about')
 def about_page():
 	return render_template('about.html')
+
+@app.route('/teams')
+def teams_page():
+	return render_template('teams.html')
+
+
+@app.route('/teams/<team>')
+def given_team_page(team):
+	t=Team.query.filter(Team.name==team).first()
+	if t is not None:
+		players=Player.query.filter(Player.team_id==t.id).all()
+		return render_template(f"teams/{team}.html",team=t,players=players)
+	else:
+		abort(404)
+
+@app.route('/players/<player>')
+def given_player_page(player):
+	return render_template('base.html')

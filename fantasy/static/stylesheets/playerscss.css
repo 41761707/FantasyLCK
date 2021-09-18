@@ -13,3 +13,11 @@ main,body
 {
 	 overflow-x: auto;
 }
+.invisible
+{
+	display: none;
+}
+.visible
+{
+	display: auto;
+}
