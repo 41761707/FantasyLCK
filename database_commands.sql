@@ -37,6 +37,7 @@ CREATE TABLE game (
 	team2_id INTEGER NOT NULL, 
 	team2_score INTEGER NOT NULL, 
 	week INTEGER NOT NULL, 
+	game_played BOOLEAN NOT NULL, 
 	PRIMARY KEY (id), 
 	FOREIGN KEY(team1_id) REFERENCES team (id), 
 	FOREIGN KEY(team2_id) REFERENCES team (id)
@@ -1055,15 +1056,347 @@ INSERT INTO PlayersStatsSummary VALUES(72,0,0,0,0,0.00,0,0,0,0.00);
 INSERT INTO PlayersStatsSummary VALUES(73,0,0,0,0,0.00,0,0,0,0.00);
 -- teams stats  insertions
 
+INSERT INTO TeamsStats VALUES(1,1,1,1,3,1,8,12);
+
 -- teams stats weekly insertions
 
--- teams stats summary insertions
+INSERT INTO TeamsStatsWeekly VALUES(1,1,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(2,1,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(3,1,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(4,1,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(5,1,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(6,1,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(7,1,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(8,1,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(9,1,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(10,1,0,0,0,0,0,0.00,10);
+INSERT INTO TeamsStatsWeekly VALUES(11,2,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(12,2,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(13,2,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(14,2,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(15,2,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(16,2,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(17,2,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(18,2,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(19,2,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(20,2,0,0,0,0,0,0.00,10);
+INSERT INTO TeamsStatsWeekly VALUES(21,3,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(22,3,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(23,3,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(24,3,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(25,3,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(26,3,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(27,3,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(28,3,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(29,3,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(30,3,0,0,0,0,0,0.00,10);
+INSERT INTO TeamsStatsWeekly VALUES(31,4,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(32,4,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(33,4,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(34,4,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(35,4,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(36,4,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(37,4,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(38,4,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(39,4,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(40,4,0,0,0,0,0,0.00,10);
+INSERT INTO TeamsStatsWeekly VALUES(41,5,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(42,5,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(43,5,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(44,5,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(45,5,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(46,5,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(47,5,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(48,5,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(49,5,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(50,5,0,0,0,0,0,0.00,10);
+INSERT INTO TeamsStatsWeekly VALUES(51,6,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(52,6,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(53,6,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(54,6,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(55,6,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(56,6,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(57,6,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(58,6,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(59,6,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(60,6,0,0,0,0,0,0.00,10);
+INSERT INTO TeamsStatsWeekly VALUES(61,7,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(62,7,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(63,7,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(64,7,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(65,7,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(66,7,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(67,7,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(68,7,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(69,7,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(70,7,0,0,0,0,0,0.00,10);
+INSERT INTO TeamsStatsWeekly VALUES(71,8,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(72,8,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(73,8,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(74,8,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(75,8,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(76,8,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(77,8,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(78,8,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(79,8,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(80,8,0,0,0,0,0,0.00,10);
+INSERT INTO TeamsStatsWeekly VALUES(81,9,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(82,9,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(83,9,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(84,9,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(85,9,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(86,9,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(87,9,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(88,9,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(89,9,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(90,9,0,0,0,0,0,0.00,10);
+INSERT INTO TeamsStatsWeekly VALUES(91,10,0,0,0,0,0,0.00,1);
+INSERT INTO TeamsStatsWeekly VALUES(92,10,0,0,0,0,0,0.00,2);
+INSERT INTO TeamsStatsWeekly VALUES(93,10,0,0,0,0,0,0.00,3);
+INSERT INTO TeamsStatsWeekly VALUES(94,10,0,0,0,0,0,0.00,4);
+INSERT INTO TeamsStatsWeekly VALUES(95,10,0,0,0,0,0,0.00,5);
+INSERT INTO TeamsStatsWeekly VALUES(96,10,0,0,0,0,0,0.00,6);
+INSERT INTO TeamsStatsWeekly VALUES(97,10,0,0,0,0,0,0.00,7);
+INSERT INTO TeamsStatsWeekly VALUES(98,10,0,0,0,0,0,0.00,8);
+INSERT INTO TeamsStatsWeekly VALUES(99,10,0,0,0,0,0,0.00,9);
+INSERT INTO TeamsStatsWeekly VALUES(100,10,0,0,0,0,0,0.00,10);
 
+
+-- teams stats summary insertions
+INSERT INTO TeamsStatsSummary VALUES(1,0,0,0,0,0,0.00);
+INSERT INTO TeamsStatsSummary VALUES(2,0,0,0,0,0,0.00);
+INSERT INTO TeamsStatsSummary VALUES(3,0,0,0,0,0,0.00);
+INSERT INTO TeamsStatsSummary VALUES(4,0,0,0,0,0,0.00);
+INSERT INTO TeamsStatsSummary VALUES(5,0,0,0,0,0,0.00);
+INSERT INTO TeamsStatsSummary VALUES(6,0,0,0,0,0,0.00);
+INSERT INTO TeamsStatsSummary VALUES(7,0,0,0,0,0,0.00);
+INSERT INTO TeamsStatsSummary VALUES(8,0,0,0,0,0,0.00);
+INSERT INTO TeamsStatsSummary VALUES(9,0,0,0,0,0,0.00);
+INSERT INTO TeamsStatsSummary VALUES(10,0,0,0,0,0,0.00);
 
 -- procedures
 
 
 -- triggers
+
+--TeamsStatsWeekly
+
+DROP TRIGGER insert_games_team_weekly;
+CREATE TRIGGER IF NOT EXISTS insert_games_team_weekly AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET games_played=games_played+1 WHERE TeamsStatsWeekly.team_id =new.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=new.match_id);
+END;
+
+DROP TRIGGER update_games_team_weekly;
+CREATE TRIGGER IF NOT EXISTS update_games_team_weekly AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET games_played=games_played WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER delete_games_team_weekly;
+CREATE TRIGGER IF NOT EXISTS delete_games_team_weekly AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET games_played=games_played-1 WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER insert_barons_weekly;
+CREATE TRIGGER IF NOT EXISTS insert_barons_weekly AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET barons=barons+new.barons WHERE TeamsStatsWeekly.team_id =new.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=new.match_id);
+END;
+
+DROP TRIGGER update_barons_weekly;
+CREATE TRIGGER IF NOT EXISTS update_barons_weekly AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET barons=barons+new.barons-old.barons WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER delete_barons_weekly;
+CREATE TRIGGER IF NOT EXISTS delete_barons_weekly AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET barons=barons-old.barons WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER insert_dragons_weekly;
+CREATE TRIGGER IF NOT EXISTS insert_dragons_weekly AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET dragons=dragons+new.dragons WHERE TeamsStatsWeekly.team_id =new.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=new.match_id);
+END;
+
+DROP TRIGGER update_dragons_weekly;
+CREATE TRIGGER IF NOT EXISTS update_dragons_weekly AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET dragons=dragons+new.dragons-old.dragons WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER delete_dragons_weekly;
+CREATE TRIGGER IF NOT EXISTS delete_dragons_weekly AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET dragons=dragons-old.dragons WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER insert_first_bloods_weekly;
+CREATE TRIGGER IF NOT EXISTS insert_first_bloods_weekly AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET first_bloods=first_bloods+new.first_bloods WHERE TeamsStatsWeekly.team_id =new.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=new.match_id);
+END;
+
+DROP TRIGGER update_first_bloods_weekly;
+CREATE TRIGGER IF NOT EXISTS update_first_bloods_weekly AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET first_bloods=first_bloods+new.first_bloods-old.first_bloods WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER delete_first_bloods_weekly;
+CREATE TRIGGER IF NOT EXISTS delete_first_bloods_weekly AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET first_bloods=first_bloods-old.first_bloods WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER insert_towers_weekly;
+CREATE TRIGGER IF NOT EXISTS insert_towers_weekly AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET towers=towers+new.towers WHERE TeamsStatsWeekly.team_id =new.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=new.match_id);
+END;
+
+DROP TRIGGER update_towers_weekly;
+CREATE TRIGGER IF NOT EXISTS update_towers_weekly AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET towers=towers+new.towers-old.towers WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER delete_towers_weekly;
+CREATE TRIGGER IF NOT EXISTS delete_towers_weekly AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET towers=towers-old.towers WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER insert_points_team_weekly;
+CREATE TRIGGER IF NOT EXISTS insert_points_team_weekly AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET points=points+new.points WHERE TeamsStatsWeekly.team_id =new.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=new.match_id);
+END;
+
+DROP TRIGGER update_points_team_weekly;
+CREATE TRIGGER IF NOT EXISTS update_points_team_weekly AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET points=points+new.points-old.points WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+DROP TRIGGER delete_points_team_weekly;
+CREATE TRIGGER IF NOT EXISTS delete_points_team_weekly AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsWeekly SET points=points-old.points WHERE TeamsStatsWeekly.team_id =old.team_id AND TeamsStatsWeekly.week =(SELECT week FROM Match WHERE Match.id=old.match_id);
+END;
+
+--TeamsStatsSummary
+DROP TRIGGER insert_games_team;
+CREATE TRIGGER IF NOT EXISTS insert_games_team AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET games_played=games_played+1 WHERE TeamsStatsSummary.team_id =new.team_id;
+END;
+
+DROP TRIGGER update_games_team;
+CREATE TRIGGER IF NOT EXISTS update_games_team AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET games_played=games_played WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER delete_games_team;
+CREATE TRIGGER IF NOT EXISTS delete_games_team AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET games_played=games_played-1 WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER insert_barons;
+CREATE TRIGGER IF NOT EXISTS insert_barons AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET barons=barons+new.barons WHERE TeamsStatsSummary.team_id =new.team_id;
+END;
+
+DROP TRIGGER update_barons;
+CREATE TRIGGER IF NOT EXISTS update_barons AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET barons=barons+new.barons-old.barons WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER delete_barons;
+CREATE TRIGGER IF NOT EXISTS delete_barons AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET barons=barons-old.barons WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER insert_dragons;
+CREATE TRIGGER IF NOT EXISTS insert_dragons AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET dragons=dragons+new.dragons WHERE TeamsStatsSummary.team_id =new.team_id;
+END;
+
+DROP TRIGGER update_dragons;
+CREATE TRIGGER IF NOT EXISTS update_dragons AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET dragons=dragons+new.dragons-old.dragons WHERE TeamsStatsSummary.team_id =old.team_id);
+END;
+
+DROP TRIGGER delete_dragons;
+CREATE TRIGGER IF NOT EXISTS delete_dragons AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET dragons=dragons-old.dragons WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER insert_first_bloods;
+CREATE TRIGGER IF NOT EXISTS insert_first_bloods AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET first_bloods=first_bloods+new.first_bloods WHERE TeamsStatsSummary.team_id =new.team_id;
+END;
+
+DROP TRIGGER update_first_bloods;
+CREATE TRIGGER IF NOT EXISTS update_first_bloods AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET first_bloods=first_bloods+new.first_bloods-old.first_bloods WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER delete_first_bloods;
+CREATE TRIGGER IF NOT EXISTS delete_first_bloods AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET first_bloods=first_bloods-old.first_bloods WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER insert_towers;
+CREATE TRIGGER IF NOT EXISTS insert_towers AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET towers=towers+new.towers WHERE TeamsStatsSummary.team_id =new.team_id;
+END;
+
+DROP TRIGGER update_towers;
+CREATE TRIGGER IF NOT EXISTS update_towers AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET towers=towers+new.towers-old.towers WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER delete_towers;
+CREATE TRIGGER IF NOT EXISTS delete_towers AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET towers=towers-old.towers WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER insert_points_team;
+CREATE TRIGGER IF NOT EXISTS insert_points_team AFTER INSERT ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET points=points+new.points WHERE TeamsStatsSummary.team_id =new.team_id;
+END;
+
+DROP TRIGGER update_points_team;
+CREATE TRIGGER IF NOT EXISTS update_points_team AFTER UPDATE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET points=points+new.points-old.points WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
+
+DROP TRIGGER delete_points_team;
+CREATE TRIGGER IF NOT EXISTS delete_points_team AFTER DELETE ON TeamsStats
+BEGIN
+	UPDATE TeamsStatsSummary SET points=points-old.points WHERE TeamsStatsSummary.team_id =old.team_id;
+END;
 
 --PlayersStatsWeekly
 DROP TRIGGER insert_kills_weekly;
@@ -1400,7 +1733,7 @@ BEGIN
 	UPDATE PlayersStatsSummary SET creep_score=creep_score-old.creep_score WHERE PlayersStatsSummary.player_id =old.player_id;
 END;
 
--- TO-DO: same for PlayersStatsSummary and Teams!
+-- TO-DO: same for Teams!
 
 
 -- ATTENTION: Test data comes from Summer Split 2021
@@ -1408,16 +1741,26 @@ END;
 
 -- game table insertions
 
-INSERT INTO Game VALUES(1,4,2,8,0,1);
-INSERT INTO Game VALUES(2,10,2,6,0,1);
-INSERT INTO Game VALUES(3,7,1,9,2,1);
-INSERT INTO Game VALUES(4,5,2,2,1,1);
-INSERT INTO Game VALUES(5,1,2,4,1,1);
-INSERT INTO Game VALUES(6,3,2,10,1,1);
-INSERT INTO Game VALUES(7,9,2,8,1,1);
-INSERT INTO Game VALUES(8,5,2,6,0,1);
-INSERT INTO Game VALUES(9,7,2,3,0,1);
-INSERT INTO Game VALUES(10,2,0,1,2,1);
+INSERT INTO Game VALUES(1,4,2,8,0,1,TRUE);
+INSERT INTO Game VALUES(2,10,2,6,0,1,TRUE);
+INSERT INTO Game VALUES(3,7,1,9,2,1,TRUE);
+INSERT INTO Game VALUES(4,5,2,2,1,1,TRUE);
+INSERT INTO Game VALUES(5,1,2,4,1,1,TRUE);
+INSERT INTO Game VALUES(6,3,2,10,1,1,TRUE);
+INSERT INTO Game VALUES(7,9,2,8,1,1,TRUE);
+INSERT INTO Game VALUES(8,5,2,6,0,1,TRUE);
+INSERT INTO Game VALUES(9,7,2,3,0,1,TRUE);
+INSERT INTO Game VALUES(10,2,0,1,2,1,TRUE);
+INSERT INTO Game VALUES(11,2,0,9,0,2,FALSE);
+INSERT INTO Game VALUES(12,7,0,5,0,2,FALSE);
+INSERT INTO Game VALUES(13,10,0,4,0,2,FALSE);
+INSERT INTO Game VALUES(14,3,0,1,0,2,FALSE);
+INSERT INTO Game VALUES(15,8,0,6,0,2,FALSE);
+INSERT INTO Game VALUES(16,9,0,5,0,2,FALSE);
+INSERT INTO Game VALUES(17,3,0,2,0,2,FALSE);
+INSERT INTO Game VALUES(18,1,0,7,0,2,FALSE);
+INSERT INTO Game VALUES(19,8,0,10,0,2,FALSE);
+INSERT INTO Game VALUES(20,4,0,6,0,2,FALSE);
 
 -- match table insertions
 INSERT INTO Match VALUES(1,1,1,TRUE,8,0,4,1,1,36,6);
@@ -1697,10 +2040,3 @@ INSERT INTO PlayersStats VALUES(247,9,25,0,4,1,252,0,0,0,2.02);
 INSERT INTO PlayersStats VALUES(248,10,25,0,1,1,360,0,0,0,4.60);
 INSERT INTO PlayersStats VALUES(249,11,25,1,0,0,447,0,0,0,6.47);
 INSERT INTO PlayersStats VALUES(250,12,25,0,4,1,42,0,0,0,-0.08);
-
-
-
-
-
-
-SELECT * FROM Game JOIN Team As T1 ON Game.team1_id=T1.id JOIN Team AS T2 ON Game.team2_id=T2.id;

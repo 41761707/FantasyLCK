@@ -46,6 +46,7 @@ class Game(db.Model):
 	team2_id=db.Column(db.Integer(),db.ForeignKey('team.id'),nullable=False)
 	team2_score=db.Column(db.Integer(),nullable=False)
 	week=db.Column(db.Integer(),nullable=False)
+	game_played=db.Column(db.Boolean(),nullable=False,default=False)
 	match=db.relationship('Match',backref="game",lazy=True)
 
 	def __repr__(self):
@@ -176,3 +177,8 @@ class User(db.Model):
 	password=db.Column(db.LargeBinary(),nullable=False)
 	email=db.Column(db.String(length=50),nullable=False)
 	
+class Article(db.Model):
+	__tablename__="Article"
+	id=db.Column(db.Integer(),primary_key=True)
+	author=db.Column(db.String(length=30),nullable=False)
+	content=db.Column(db.String(),nullable=False)

@@ -42,10 +42,169 @@ Strona Główna
   <header class="text-center">
     <h1 class="display-1 m-5"> Strona Główna</h1>
   </header>
-  <article class="row">
-
+  <article data-aos="fade-down" class="row m-3 p-3 text-center">
+    <section class="border bg-secondary p-3 text-white border-round">
+      <h2 class="display-3">Rozpoczynamy za:</h2>
+      <h1 class="display-1" id=timer></h2>
+    </section>
   </article>
+  <article class="row m-3 p-3">
+    <section data-aos="fade-right"  class="col-sm-6 border m-3 bg-light text-center">
+      <h3 class="display-4">Ostatnie spotkania</h2>
+      {% for game in latest_games %}
+      <div class="row text-center m-5">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h2 class="col">{{game.team1_score}}</h2>
+        <h2 class="col"> - </h2>
+        <h2 class="col">{{game.team2_score}}</h2>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endfor %}
+    </section>
+    <section data-aos="fade-left"  class="col-sm-6 border m-3 bg-light text-center">
+      <h3 class="display-4">Najbliższe spotkania</h2>
+      {% for game in upcoming_games %}
+      <div class="row text-center m-5">
+        <img class="col photo" src="{{ url_for('static',filename=game.photo1) }}"/>
+        <h2 class="col">{{game.team1_score}}</h2>
+        <h2 class="col"> Mecz {{game.id}} </h2>
+        <h2 class="col">{{game.team2_score}}</h2>
+        <img class="col photo" src="{{ url_for('static',filename=game.photo2) }}"/>
+      </div>
+      {% endfor %}
+    </section>
+  </article>
+  <article data-aos="flip-left" class="row m-4 p-3 bg-dark text-center text-white border justify-content-center">
+      <h1 class="display-2">Drużyna tygodnia</h1>
+      {% for player in team_of_the_week %}
+          <section class="m-2 bg-success card w-50">
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img class ="card-img" src="{{ url_for('static',filename='logos/gracz.jpg') }}" alt="Zdjęcie gracza">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h1 class="card-title">{{player.name}}</h3>
+                  <h1 class="card-text">{{player.role}}</h3>
+                  <h1 class="card-text">{{player.shortcut}}</h3>
+                  <h1 class="card-footer text-dark border-light">{{"%.2f"|format(player.score)}}</h2>
+                </div>
+              </div>
+            </div>
+          </section>
+      {% endfor %}
+    </article>
+    <article class="row m-4 p-3 bg-secondary text-center text-dark border">
+      <h2 class="display-2 text-white">Liderzy statystyk</h2>
+      <section class="row m-3 p-3 justify-content-center">
+        <div data-aos="fade-right"  class="col-sm-4 border m-3 p-3 bg-dark text-white text-center">
+          <h3 class="display-4">Zabójstwa</h3>
+          {% for player in highest_kills %}
+          <div class="mySlides1 card border-dark bg-dark text-white">
+            <img src="{{ url_for('static',filename='logos/gracz.jpg') }}" alt="Zdjęcie gracza" style="width:100%;">
+            <div class="card-body">
+              <h2 class="card-title">{{player.name}}</h3>
+              <h2 class="card-text">{{player.N_O_kills}}</h2>
+            </div>
+          </div>
+          {% endfor %}
+        <a class="prev" onclick="plusSlides(-1, 0)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1, 0)">&#10095;</a>
+        </div>
+        <div data-aos="fade-right"  class="col-sm-4 border m-3 p-3 bg-dark text-white text-center">
+          <h3 class="display-4">Zgony</h3>
+          {% for player in highest_deaths %}
+          <div class="mySlides2 card border-dark bg-dark text-white">
+            <img src="{{ url_for('static',filename='logos/gracz.jpg') }}" alt="Zdjęcie gracza" style="width:100%;">
+            <div class="card-body">
+              <h2 class="card-title">{{player.name}}</h3>
+              <h2 class="card-text">{{player.N_O_deaths}}</h2>
+            </div>
+          </div>
+          {% endfor %}
+        <a class="prev" onclick="plusSlides(-1, 1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1, 1)">&#10095;</a>
+        </div>
+        <div data-aos="fade-right"  class="col-sm-4 border m-3 p-3 bg-dark text-center">
+          <h3 class="display-4 text-white">Asysty</h3>
+          {% for player in highest_assists %}
+          <div class="mySlides3 card border-dark bg-dark text-white">
+            <img src="{{ url_for('static',filename='logos/gracz.jpg') }}" alt="Zdjęcie gracza" style="width:100%;">
+            <div class="card-body">
+              <h2 class="card-title">{{player.name}}</h3>
+              <h2 class="card-text">{{player.N_O_assists}}</h2>
+            </div>
+          </div>
+          {% endfor %}
+        <a class="prev" onclick="plusSlides(-1, 2)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1, 2)">&#10095;</a>
+        </div>
+      </section>
+      <section class="row m-3 p-3 justify-content-center">
+        <div data-aos="fade-right"  class="col-sm-4 border m-3 p-3 bg-dark text-center">
+          <h3 class="display-4 text-white">Creep Score</h3>
+          {% for player in highest_creep_score %}
+          <div class="mySlides4 card border-dark bg-dark text-white">
+            <img src="{{ url_for('static',filename='logos/gracz.jpg') }}" alt="Zdjęcie gracza" style="width:100%;">
+            <div class="card-body">
+              <h2 class="card-title">{{player.name}}</h3>
+              <h2 class="card-text">{{player.N_O_creeps}}</h2>
+            </div>
+          </div>
+          {% endfor %}
+        <a class="prev" onclick="plusSlides(-1, 3)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1, 3)">&#10095;</a>
+        </div>
+        <div data-aos="fade-right"  class="col-sm-4 border m-3 bg-light text-center">
+          <h3 class="display-4">Triples</h3>
+        </div>
+        <div data-aos="fade-right"  class="col-sm-4 border m-3 bg-light text-center">
+          <h3 class="display-4">Quadras</h3>
+        </div>
+      </section>
+    </article>
   <footer>
   </footer>
 </main>
+<script>
+var countDownDate = new Date("Jan 1, 2022 00:00:00").getTime();
+
+var x = setInterval(function() {
+  var now = new Date().getTime();
+  var distance = countDownDate - now;
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  document.getElementById("timer").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("timer").innerHTML = "JUŻ JEST!";
+  }
+}, 1000);
+</script>
+<script>
+var slideIndex = [1,1,1,1];
+var slideId = ["mySlides1", "mySlides2","mySlides3","mySlides4"]
+showSlides(1,0);
+showSlides(1,1);
+showSlides(1,2);
+showSlides(1,3);
+
+function plusSlides(n, no) {
+  showSlides(slideIndex[no] += n, no);
+}
+
+function showSlides(n, no) {
+  var i;
+  var x = document.getElementsByClassName(slideId[no]);
+  if (n > x.length) {slideIndex[no] = 1}    
+  if (n < 1) {slideIndex[no] = x.length}
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";  
+  }
+  x[slideIndex[no]-1].style.display = "block";  
+}
+</script>
 {% endblock %}

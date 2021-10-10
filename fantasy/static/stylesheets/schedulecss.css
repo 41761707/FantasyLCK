@@ -52,8 +52,7 @@ main,body
 .accordion:after 
 {
   content: '\02795';
-  font-size: 13px;
-  color: #f7f7f7;
+  font-size: 20px;
   float: right;
   margin-left: 5px;
 }
@@ -61,7 +60,6 @@ main,body
 .current:after 
 {
   content: "\2796";
-  color: #f7f7f7;
 }
 .border
 {

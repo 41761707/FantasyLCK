@@ -1,0 +1,26 @@
+body
+{
+	box-sizing: border-box;
+}
+main,body
+{
+	color: #030202;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+.border
+{
+	border-radius: 25px;
+}
+.info
+{
+	width: 50% !important;
+}
+@media (max-width: 900px)
+{
+	.info
+	{
+		width: 85% !important;
+	}
+}

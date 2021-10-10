@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='stylesheets/teams.css') }}"/>
 {% endblock %}
 {% block title %}
-	Afreeca Freecs
+	{{team.name}}
 {% endblock %}
 {% block nav %}
 	{% include 'navbar_no_active.html' %}
@@ -15,7 +15,7 @@
     <h1 class="display-1 m-5">{{team.name}}</h1>
 
   </header>
-  <article class="row m-3 text-center">
+  <article class="row m-3 text-center justify-content-center">
     {% for player in players %}
       <section class="borders col-sm-4 text-center text-white card">
             <img src="{{ url_for('static',filename='logos/gracz.jpg') }}" alt="Zdjęcie gracza">
