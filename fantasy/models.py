@@ -1,4 +1,53 @@
-from fantasy import db
+from fantasy import db,bcrypt,login_manager,app
+#from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+import datetime
+from flask_login import UserMixin
+
+@login_manager.user_loader
+def load_user(user_id):
+	return User.query.get(int(user_id))
+
+class User(db.Model,UserMixin):
+	__tablename__="User"
+	id=db.Column(db.Integer(),primary_key=True)
+	nickname=db.Column(db.String(length=30),nullable=False,unique=True)
+	login=db.Column(db.String(20),nullable=False)
+	password=db.Column(db.String(80),nullable=False)
+	email=db.Column(db.String(40),nullable=False,unique=True)
+	user_team_ID=db.Column(db.Integer(),db.ForeignKey('userTeam.id'),nullable=False,unique=True)
+	user_league=db.Column(db.Integer(),db.ForeignKey('league.id'),nullable=False)
+	@property
+	def passw(self):
+		return self.passw
+
+	@passw.setter
+	def passw(self,plain_text_password):
+		self.password=bcrypt.generate_password_hash(plain_text_password).decode('utf-8')
+
+	def check_passw_correction(self,attempted_password):
+		return bcrypt.check_password_hash(self.password,attempted_password)
+
+	'''def get_token(self):
+		serial=Serializer(app.config['SECRET_KEY'],expires_in=360)
+		return serial.dumps({'user_id':self.id}).decode('utf-8')
+
+	@staticmethod
+	def verify_token(token):
+		serial=Serializer(app.config['SECRET_KEY'])
+		try:
+			user_id=serial.loads(token)['user_id']
+		except:
+			return None
+		return User.query.get(int(user_id))
+	'''
+
+class UserTeam(db.Model):
+	__tablename__="UserTeam"
+	id=db.Column(db.Integer(),primary_key=True)
+
+class UserLeague(db.Model):
+	__tablename__="UserLeague"
+	id=db.Column(db.Integer(),primary_key=True)
 
 class Player(db.Model):
 	id=db.Column(db.Integer(),primary_key=True)
@@ -168,14 +217,6 @@ class TeamsStatsSummary(db.Model):
 
 	def __repr__(self):
 		return f'{self.team_id}'
-
-
-class User(db.Model):
-	__tablename__='User'
-	id=db.Column(db.Integer(),primary_key=True)
-	nickname=db.Column(db.String(length=30),nullable=False)
-	password=db.Column(db.LargeBinary(),nullable=False)
-	email=db.Column(db.String(length=50),nullable=False)
 	
 class Article(db.Model):
 	__tablename__="Article"

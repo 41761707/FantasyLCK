@@ -1,9 +1,26 @@
-from fantasy import app,conn,db
-from flask import render_template,abort
+from fantasy import app,conn,db, mail
+from flask import render_template,abort, redirect,url_for,flash
+from fantasy.forms import RegisterForm, LoginForm, RecoverForm
 from sqlalchemy.orm import aliased
 from sqlalchemy import desc
 from sqlalchemy.sql import func
-from fantasy.models import Player,PlayersStatsWeekly,PlayersStatsSummary,Match,Team,Game
+from fantasy.models import Player,PlayersStatsWeekly,PlayersStatsSummary,Match,Team,Game,User, UserTeam, UserLeague
+from flask_login import login_user, logout_user, login_required, current_user
+from flask_mail import Message
+import datetime
+
+session={}
+
+def send_mail(user):
+	token=user.get_token()
+	msg=Message('Resetowanie hasła',recipients=[user.email],sender="raggioconivalli@gmail.com")
+	msg.body=f'''
+		Aby zresetować hasło naciśnij poniższy link:
+		{url_for('reset_page',token=token,_external=True)}
+		W przeciwnym razie zignoruj wiadomość
+	'''
+	mail.send(msg)
+	print("Wyslalem wiadomosc")
 
 @app.route('/index/')
 @app.route('/')
@@ -27,7 +44,11 @@ def home_page():
 	highest_deaths=db.session.query(func.sum(PlayersStatsWeekly.deaths).label("N_O_deaths"),PlayersStatsWeekly.player_id,Player.id,Player.name,Player.role,Player.team_id,Team.id,Team.shortcut).join(Player,PlayersStatsWeekly.player_id==Player.id).join(Team,Player.team_id==Team.id).group_by(Player.id).order_by(desc("N_O_deaths")).limit(3).all()
 	highest_assists=db.session.query(func.sum(PlayersStatsWeekly.assists).label("N_O_assists"),PlayersStatsWeekly.player_id,Player.id,Player.name,Player.role,Player.team_id,Team.id,Team.shortcut).join(Player,PlayersStatsWeekly.player_id==Player.id).join(Team,Player.team_id==Team.id).group_by(Player.id).order_by(desc("N_O_assists")).limit(3).all()
 	highest_creep_score=db.session.query(func.sum(PlayersStatsWeekly.creep_score).label("N_O_creeps"),PlayersStatsWeekly.player_id,Player.id,Player.name,Player.role,Player.team_id,Team.id,Team.shortcut).join(Player,PlayersStatsWeekly.player_id==Player.id).join(Team,Player.team_id==Team.id).group_by(Player.id).order_by(desc("N_O_creeps")).limit(3).all()
-	print(highest_creep_score)
+	highest_triple_score=db.session.query(func.sum(PlayersStatsWeekly.triples).label("N_O_triples"),PlayersStatsWeekly.player_id,Player.id,Player.name,Player.role,Player.team_id,Team.id,Team.shortcut).join(Player,PlayersStatsWeekly.player_id==Player.id).join(Team,Player.team_id==Team.id).group_by(Player.id).order_by(desc("N_O_triples")).limit(3).all()
+	highest_quadra_score=db.session.query(func.sum(PlayersStatsWeekly.quadras).label("N_O_quadras"),PlayersStatsWeekly.player_id,Player.id,Player.name,Player.role,Player.team_id,Team.id,Team.shortcut).join(Player,PlayersStatsWeekly.player_id==Player.id).join(Team,Player.team_id==Team.id).group_by(Player.id).order_by(desc("N_O_quadras")).limit(3).all()
+	for player in highest_triple_score:
+		print(player.name)
+		print(player.N_O_triples)
 	return render_template('base.html',
 		latest_games=latest_games,
 		upcoming_games=upcoming_games,
@@ -35,7 +56,9 @@ def home_page():
 		highest_kills=highest_kills,
 		highest_deaths=highest_deaths,
 		highest_assists=highest_assists,
-		highest_creep_score=highest_creep_score)
+		highest_creep_score=highest_creep_score,
+		highest_triple_score=highest_triple_score,
+		highest_quadra_score=highest_quadra_score)
 
 
 @app.route('/news')
@@ -100,3 +123,70 @@ def given_player_page(player):
 		return render_template('player.html',player=p)
 	else:
 		abort(404)
+
+@app.route('/login',methods=['GET','POST'])
+def login_page():
+	if current_user.is_authenticated:
+		return redirect(url_for('home_page'))
+	form=LoginForm()
+	if form.validate_on_submit():
+		requested_user=User.query.filter_by(login=form.login.data).first()
+		if requested_user and requested_user.check_passw_correction(form.password.data):
+			login_user(requested_user)
+			flash('Udało Ci się zalogować na konto o nazwie: {}'.format(requested_user.login), category='success')
+			return redirect(url_for('home_page'))
+		else:
+			flash('Logowanie nie powiodło się. Spróbuj ponownie',category='danger')
+	if form.errors != {}:
+		for err_msg in form.errors.values():
+			flash('Logowanie nie powiodło się, powód: {}'.format(err_msg),category='danger')
+	return render_template('login.html',form=form)
+
+@app.route('/signUp',methods=['GET','POST'])
+def signup_page():
+	if current_user.is_authenticated:
+		return redirect(url_for('home_page'))
+	form=RegisterForm()
+	if form.validate_on_submit():
+		query=db.session.query(User.id).all()
+		print(query)
+		if query == []:
+			max_id=0
+		else:
+			max_id=int(query[-1][0])
+		new_acc_number=max_id+1
+		acc_number=str(new_acc_number).zfill(8)
+		user_to_create=User(account_number=acc_number,login=form.login.data,email=form.email.data,passw=form.password1.data,savings=0)
+		db.session.add(user_to_create)
+		db.session.commit()
+		login_user(user_to_create)
+		flash('Zakładanie konta ukończone powodzeniem, jesteś zalogowany jako:{}'.format(user_to_create.login), category='success')
+		return redirect(url_for('home_page'))
+	if form.errors != {}:
+		for err_msg in form.errors.values():
+			flash('Utworzenie użytkownika nie powiodło się, powód: {}'.format(err_msg),category='danger')
+	return render_template('signup.html',form=form)
+
+@app.route('/logout')
+@login_required
+def logout_page():
+	logout_user()
+	flash("Pomyślnie wylogowano!",category="info")
+	return redirect(url_for('home_page'))
+
+@app.route('/restore',methods=["GET", "POST"])
+def restore_page():
+	if current_user.is_authenticated:
+		return redirect(url_for('home_page'))
+	form = RecoverForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.email.data).first()
+		if user:
+			send_mail(user)
+		flash('Informacje o resetowaniu hasła zostały przesłane na wprowadzony adres e-mail',category='success')
+		return redirect(url_for('home_page'))
+	if form.errors != {}:
+		for err_msg in form.errors.values():
+			flash('Wysłanie wiadomości z odzyskaniem hasła nie powiodła się, powód: {}'.format(err_msg),category='danger')
+
+	return render_template('restore.html',form=form)
