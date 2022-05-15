@@ -1,4 +1,3 @@
-from fantasy import routes
 from flask import Flask, render_template
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
@@ -25,3 +24,5 @@ engine = create_engine('sqlite:///database.db', echo=True)
 meta = MetaData()
 
 conn = engine.connect()
+
+from fantasy import routes
